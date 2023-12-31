@@ -201,13 +201,21 @@ class World:
                 zp=2
                 )
         track_camera = xmltodict.parse('''<b>
-            <camera name="track" mode="track" pos="{xp} {yp} {zp}" xyaxes="{x1} {x2} {x3} {y1} {y2} {y3}"/>
-            </b>'''.format(**pos, **xyaxes))
+            <camera name="vision_back"  pos="0 0 .15" xyaxes="0 1 0 0 0 1" fovy="90"/>
+            </b>''')
         worldbody['body'][0]['camera'] = [
             worldbody['body'][0]['camera'],
             track_camera['b']['camera']
             ]
 
+        # track_camera = xmltodict.parse('''<b>
+        #     <camera name="vision_back"  pos="0 0 .15" xyaxes="0 1 0 .4 0 1" fovy="90"/>
+        #     </b>''')
+        # worldbody['body'][0]['camera'] = [
+        #     worldbody['body'][0]['camera'],
+        #     track_camera['b']['camera']
+        #     ]
+        
 
         # Add objects to the XML dictionary
         for name, object in self.objects.items():

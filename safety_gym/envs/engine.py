@@ -973,10 +973,19 @@ class Engine(gym.Env, gym.utils.EzPickle):
         # Get a render context so we can
         rows, cols = self.vision_size
         width, height = cols, rows
-        vision = self.sim.render(width, height, camera_id='vision', scene_option=self._vis_opt)
+        vision = self.sim.render(width, height, camera_id=2, scene_option=self._vis_opt)
         vision = ImageOps.flip(Image.fromarray(vision))
         return np.asarray(vision, dtype='float32') / 255
 
+    def obs_vision_back(self):
+        ''' Return pixels from the robot camera '''
+        # Get a render context so we can
+        rows, cols = self.vision_size
+        width, height = cols, rows
+        vision = self.sim.render(width, height, camera_id=3, scene_option=self._vis_opt)
+        vision = ImageOps.flip(Image.fromarray(vision))
+        return np.asarray(vision, dtype='float32') / 255
+    
     def obs_lidar(self, positions, group):
         '''
         Calculate and return a lidar observation.  See sub methods for implementation.
@@ -1129,6 +1138,7 @@ class Engine(gym.Env, gym.utils.EzPickle):
             obs['ctrl'] = self.data.ctrl.copy()
         if self.observe_vision:
             obs['vision'] = self.obs_vision()
+            obs['vision_back'] = self.obs_vision_back()
         if self.observation_flatten:
             flat_obs = np.zeros(self.obs_flat_size)
             offset = 0
